@@ -1,0 +1,13 @@
+---
+# Install requirements ansible-galaxy install -f -r requirements.yml
+collections:  
+  - name: community.general
+  - name: ansible.posix
+  - name: community.docker  
+    version: 3.8.1
+
+roles:
+  - src: https://github.com/geerlingguy/ansible-role-docker.git
+    scm: git
+    version: 7.4.5
+    name: external.docker

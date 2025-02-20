@@ -1,0 +1,36 @@
+[main]
+driver = {{ pos_kkt_driver }}
+link = linkmq
+serial = {{ pos_serial }}
+[options]
+loglevel = {{ pos_log_level }}
+logfile = ./log/unibox.log
+logrotate = size
+logsize = 500000
+logcnt = 5
+logwhen = D
+loginterval = 1
+
+[pwi]
+port = 8000
+
+[uplink]
+mode = http
+odoo_adr = {{ pos_odoo_adr }}
+odoo_db = {{ pos_odoo_db }}
+uplink_hbeat_url = /posbox/heartbeat
+uplink_rz_url = /posbox/rz
+uplink_timeout = 6
+uplink_kvant = 30
+uplink_pool_size = 4
+
+[linkmq]
+mqurl = {{ pos_mqurl }}
+mqreconnect = 5
+mqout = possrv
+
+[shtrih]
+receipt_format = 2
+
+[virtualfr]
+serial = 9021234

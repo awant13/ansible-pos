@@ -1,0 +1,7 @@
+- name: Set timezone
+  become: true
+  community.general.timezone:
+    name: "{{ pos_timezone }}"
+
+- name: Force sync time with ntp server
+  ansible.builtin.command: "ntpdate -s {{ pos_ntp_server }}"

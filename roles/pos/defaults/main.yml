@@ -1,0 +1,21 @@
+###
+# Unibox service
+##
+
+pos_unibox_container: unibox-ve
+pos_unibox_image: ghcr.io/awant13/pos/unibox:latest
+
+pos_unibox_dir: /opt/storage/config
+pos_storage_unibox_dir: /opt/storage
+
+pos_pwi_port: "8000"
+
+pos_unibox_cpus: "1.0"
+pos_unibox_memory: 512m
+
+##
+# autoheal service
+##
+
+pos_autoheal_container: healtchek_pos
+pos_autoheal_image: willfarrell/autoheal:latest

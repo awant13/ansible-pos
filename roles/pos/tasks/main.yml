@@ -1,0 +1,63 @@
+
+- name: Create main directory for storage
+  ansible.builtin.file:
+    path:  "{{ pos_unibox_dir }}"
+    state: "{{ 'directory' if pos_state == 'present' else 'absent' }}"
+    mode: '0755' 
+    group: root
+    
+- name: Copy Unibox configuration files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+    owner: root
+    group: root
+  loop:
+    - { src: 'fr.conf.j2', dest: '{{ pos_unibox_dir }}/fr.conf' }
+    - { src: 'unibox.conf.j2', dest: '{{ pos_unibox_dir }}/unibox.conf' }
+  when: pos_state == "present"
+
+- name: Delete main directory torage
+  ansible.builtin.file:
+    path:  "{{ pos_storage_unibox_dir }}"
+    state: "absent"
+    mode: '0755' 
+    group: root
+  when: pos_state == "absent"
+
+- name: Run unibox Container
+  docker_container:
+    name: "{{ pos_unibox_container }}"
+    state: "{{ 'started' if pos_state == 'present' else 'absent' }}"
+    image: "{{ pos_unibox_image }}"
+    hostname: "{{ pos_unibox_container }}"
+    tty: true
+    privileged: true
+    memory: "{{ pos_unibox_memory }}"
+    cpus: "{{ pos_unibox_cpus }}"       
+    ports:
+    - "{{ pos_pwi_port }}:{{ pos_pwi_port }}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - "{{ pos_unibox_dir }}/fr.conf:/opt/storage/config/fr.conf"
+      - "{{ pos_unibox_dir }}/unibox.conf:/opt/storage/config/unibox.conf"
+      - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro
+    labels:
+      autoheal-app: "true" 
+    restart_policy: always
+
+- name: Run autoheal Container
+  docker_container:
+    name: "{{ pos_autoheal_container }}"
+    state: "{{ 'started' if pos_state == 'present' else 'absent' }}"
+    image: "{{ pos_autoheal_image }}"
+    hostname: "{{ pos_autoheal_container }}"
+    network_mode: none
+    env:
+      AUTOHEAL_CONTAINER_LABEL: autoheal-app
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart_policy: always

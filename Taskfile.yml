@@ -1,0 +1,29 @@
+version: '3'
+
+tasks:
+# example: обновить только одну роль:
+#  task reqs -- glpi-agent
+  reqs:
+    cmds:
+    # - pip install -r pip_requirements.txt
+      - ansible-galaxy install -f -r requirements.yml {{.CLI_ARGS}}
+  
+  pos:
+    silent: true
+    cmds:
+      - | 
+        sh -c 'if [ "{{ .init }}" = "true" ]; 
+        then 
+          echo "Полная настройка"; 
+          ansible-playbook pb.yml --limit={{ .lim }} -e "pos_state={{ .state }}" {{.CLI_ARGS}}; 
+        else 
+          echo "Настройка unibox service"; 
+          ansible-playbook pb.yml --limit={{ .lim }} -e "pos_state={{ .state }}" --tags=unibox {{.CLI_ARGS}}; 
+        fi'     
+    vars:
+      init: '{{ .init | default "false" }}'
+      lim: '{{ .lim }}'
+      state: '{{ .state | default "present" }}'
+    preconditions:
+      - sh: '[ "{{ .lim }}" != "" ]'
+        msg: "Ошибка: параметр 'lim' обязателен!"

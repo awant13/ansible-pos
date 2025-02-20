@@ -1,0 +1,21 @@
+- name: Setup BASE 
+  hosts: all
+  become: true
+  roles:
+  - role: base
+  tags: base
+
+- name: Setup docker service
+  hosts: all
+  become: true
+  roles:
+  - role: external.docker
+  tags: docker
+
+- name: Setup unibox service
+  hosts: all
+  become: true
+  roles:
+  - role: pos
+    pos_state: present # present / absent
+  tags: unibox
