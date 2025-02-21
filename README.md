@@ -5,7 +5,7 @@
 
 ```bash
 # При выполнение команды потребуется ввести пароль от root
-task pos kickstart lim= $host or $group
+task kickstart lim= $host or $group
 ```
 
 ### Устанавливем необходмый софт
