@@ -1,6 +1,23 @@
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Update /etc/hosts 127.0.0.1
+  lineinfile:
+    path: /etc/hosts
+    regexp: "^127\\.0\\.0\\.1\\s+.*$"
+    line: "127.0.0.1 {{ inventory_hostname }} localhost"
+    state: present
+
+- name: Update /etc/hosts 127.0.0.1
+  lineinfile:
+    path: /etc/hosts
+    regexp: "^127\\.0\\.1\\.1\\s+.*$"
+    line: "127.0.1.1 {{ inventory_hostname }}"
+    state: present
+
 - name: Add SSH-key in authorized_keys
   authorized_key:
     user: "{{ ansible_user | default('root') }}"
     state: present
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-  tags: ssh
