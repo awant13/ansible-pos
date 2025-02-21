@@ -17,6 +17,6 @@ task pos inti=true lim= $host or $group
 ### Запускаем POS service
 
 ```bash
-# Есть доплнительные параметр state=peresent or absent
+# Есть дополнительный параметр state=peresent or absent
 task pos lim= $host or $group
 ```
