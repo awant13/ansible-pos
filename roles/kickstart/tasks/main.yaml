@@ -16,6 +16,14 @@
     line: "127.0.1.1 {{ inventory_hostname }}"
     state: present
 
+- name: Set timezone
+  become: true
+  community.general.timezone:
+    name: "{{ pos_timezone }}"
+
+- name: Force sync time with ntp server
+  ansible.builtin.command: "ntpdate -s {{ pos_ntp_server }}"
+
 - name: Add SSH-key in authorized_keys
   authorized_key:
     user: "{{ ansible_user | default('root') }}"

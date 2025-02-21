@@ -1,5 +1,9 @@
-- name: Setup preqs
-  import_tasks: tasks/01_install_preq.yml
-
-- name: Set time and timezone
-  import_tasks: tasks/02_set_timezone.yml
+- name: Install required packages 
+  apt:  
+    name: "{{ item }}"
+    state: present
+  loop:
+    - jq
+    - curl
+    - ntpdate
+    - python3-requests
