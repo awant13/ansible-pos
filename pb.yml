@@ -1,3 +1,10 @@
+- name: Setup kickstart
+  hosts: all
+  become: true
+  roles:
+  - role: kickstart
+  tags: kickstart
+
 - name: Setup BASE 
   hosts: all
   become: true

@@ -15,7 +15,7 @@ tasks:
         sh -c 'if [ "{{ .init }}" = "true" ]; 
         then 
           echo "Полная настройка"; 
-          ansible-playbook pb.yml --limit={{ .lim }} -e "pos_state={{ .state }}" {{.CLI_ARGS}}; 
+          ansible-playbook pb.yml --limit={{ .lim }} -e "pos_state={{ .state }}" --tags=base,docker {{.CLI_ARGS}}; 
         else 
           echo "Настройка unibox service"; 
           ansible-playbook pb.yml --limit={{ .lim }} -e "pos_state={{ .state }}" --tags=unibox {{.CLI_ARGS}}; 
@@ -27,3 +27,14 @@ tasks:
     preconditions:
       - sh: '[ "{{ .lim }}" != "" ]'
         msg: "Ошибка: параметр 'lim' обязателен!"
+
+  kickstart:
+    silent: true
+    cmds:
+      - |
+         ansible-playbook pb.yml --limit={{ .lim }} --tags=kickstart --ask-pass {{.CLI_ARGS}}
+    ars:
+      lim: '{{ .lim }}'
+    preconditions:
+      - sh: '[ "{{ .lim }}" != "" ]'
+        msg: "Ошибка: параметр 'lim' обязателен!"   
