@@ -11,7 +11,7 @@ task kickstart lim= $host or $group
 ### Устанавливем необходмый софт
 
 ```bash
-task pos inti=true lim= $host or $group
+task pos init=true lim= $host or $group
 ```
 
 ### Запускаем POS service
