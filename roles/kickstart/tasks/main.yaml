@@ -26,7 +26,7 @@
     name: "{{ item }}"
     state: present
   loop:
-    - python3-requests
+    - ntpdate
 
 - name: Force sync time with ntp server
   ansible.builtin.command: "ntpdate -s {{ pos_ntp_server }}"
