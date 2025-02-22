@@ -5,5 +5,4 @@
   loop:
     - jq
     - curl
-    - ntpdate
     - python3-requests

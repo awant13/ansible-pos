@@ -21,6 +21,13 @@
   community.general.timezone:
     name: "{{ pos_timezone }}"
 
+- name: Install ntpdate
+  apt:  
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-requests
+
 - name: Force sync time with ntp server
   ansible.builtin.command: "ntpdate -s {{ pos_ntp_server }}"
 
