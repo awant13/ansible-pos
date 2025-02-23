@@ -9,7 +9,7 @@
     line: "127.0.0.1 {{ inventory_hostname }} localhost"
     state: present
 
-- name: Update /etc/hosts 127.0.0.1
+- name: Update /etc/hosts 127.0.1.1
   lineinfile:
     path: /etc/hosts
     regexp: "^127\\.0\\.1\\.1\\s+.*$"
